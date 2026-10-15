@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Veeva Apps | Kas & Inventaris</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="toastHost" class="toast-host" aria-live="polite"></div>
+  <div id="loadingOverlay" class="loading-overlay hidden"><div class="loader"></div><span id="loadingText">Memuat aplikasi…</span></div>
+
+  <section id="loginView" class="login-shell">
+    <div class="login-art">
+      <div class="brand-lockup light-brand">
+        <div class="brand-mark">V</div>
+        <div><div class="brand-name">Veeva Apps</div><div class="brand-caption">KAS & INVENTARIS</div></div>
+      </div>
+      <div class="login-art-copy">
+        <div class="eyebrow light-eyebrow">OPERASIONAL TOKO, LEBIH TERATUR</div>
+        <h1>Satu tempat untuk<br><span>kas dan inventaris.</span></h1>
+        <p>Catat transaksi, cek ketersediaan barang, dan pantau aktivitas toko dalam satu dashboard sederhana.</p>
+      </div>
+      <div class="login-art-footer"><span class="dot dot-green"></span> Sistem pencatatan internal</div>
+    </div>
+    <div class="login-panel">
+      <div class="mobile-brand brand-lockup">
+        <div class="brand-mark">V</div><div><div class="brand-name">Veeva Apps</div><div class="brand-caption">KAS & INVENTARIS</div></div>
+      </div>
+      <div class="login-card">
+        <div class="login-icon">↗</div>
+        <div class="eyebrow">SELAMAT DATANG KEMBALI</div>
+        <h2>Masuk ke aplikasi</h2>
+        <p class="muted login-desc">Gunakan akun yang telah dibuat oleh Owner Veeva Apps.</p>
+        <form id="loginForm" autocomplete="on">
+          <label for="loginEmail">Email</label>
+          <div class="input-wrap"><span class="input-icon">＠</span><input id="loginEmail" type="email" name="email" autocomplete="username" placeholder="nama@email.com" required maxlength="254"></div>
+          <label for="loginPassword">Kata sandi</label>
+          <div class="input-wrap"><span class="input-icon">●</span><input id="loginPassword" type="password" name="password" autocomplete="current-password" placeholder="Masukkan kata sandi" required maxlength="128"><button class="password-toggle" type="button" data-toggle-password="loginPassword" aria-label="Lihat kata sandi">Lihat</button></div>
+          <div id="loginError" class="form-error hidden"></div>
+          <button type="submit" class="btn btn-primary btn-full login-submit">Masuk <span>→</span></button>
+        </form>
+        <div class="login-footnote"><span class="lock-symbol">▣</span> Akses dibatasi untuk pengguna terdaftar.</div>
+      </div>
+      <div class="login-copyright">© <span id="copyrightYear"></span> Veeva Apps</div>
+    </div>
+  </section>
+
+  <div id="appView" class="app-shell hidden">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand brand-lockup">
+        <div class="brand-mark">V</div>
+        <div><div class="brand-name">Veeva Apps</div><div class="brand-caption">KAS & INVENTARIS</div></div>
+      </div>
+      <div class="sidebar-divider"></div>
+      <div class="nav-label">MENU UTAMA</div>
+      <nav id="sidebarNav" class="sidebar-nav"></nav>
+      <div class="sidebar-bottom">
+        <div class="sidebar-help-icon">i</div>
+        <div><strong>Butuh bantuan?</strong><span>Hubungi Owner aplikasi.</span></div>
+      </div>
+      <div class="sidebar-version">Veeva Apps <span>v1.0</span></div>
+    </aside>
+    <div class="main-area">
+      <header class="topbar">
+        <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Buka menu">☰</button>
+        <div class="topbar-heading"><span id="topbarKicker">RUANG KERJA</span><strong id="topbarTitle">Dashboard</strong></div>
+        <div class="topbar-right">
+          <div class="topbar-date" id="topbarDate"></div>
+          <div class="profile-wrap">
+            <div class="avatar" id="userAvatar">V</div>
+            <div class="profile-info"><strong id="userName">Pengguna</strong><span id="userRole">ADMIN</span></div>
+            <button id="profileMenuBtn" class="icon-button profile-chevron" aria-label="Menu profil">⌄</button>
+            <div id="profileMenu" class="profile-menu hidden">
+              <button id="changePasswordBtn">♧ &nbsp; Ganti kata sandi</button>
+              <button id="logoutBtn" class="danger-menu-item">↪ &nbsp; Keluar</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="page-container">
+        <!-- ADMIN DASHBOARD -->
+        <section id="page-dashboard" class="page hidden">
+          <div class="page-heading-row"><div><div class="eyebrow">RINGKASAN AKTIVITAS</div><h1>Dashboard</h1><p class="page-subtitle">Pantau arus kas dan aktivitas toko dalam satu tampilan.</p></div><div class="date-pill"><span class="green-pulse"></span><span id="dashboardPeriodLabel">Hari ini</span></div></div>
+          <div class="filter-panel">
+            <div class="filter-panel-title"><span class="filter-glyph">☷</span><div><strong>Filter Data</strong><small>Pilih periode untuk memperbarui ringkasan.</small></div></div>
+            <div class="filter-controls">
+              <div class="field"><label for="dashDate">Tanggal</label><input id="dashDate" type="date"></div>
+              <div class="field"><label for="dashMonth">Bulan</label><select id="dashMonth"></select></div>
+              <div class="field"><label for="dashYear">Tahun</label><select id="dashYear"></select></div>
+              <div class="filter-actions"><button id="applyDashFilter" class="btn btn-primary">Terapkan</button><button id="resetDashFilter" class="btn btn-light">Reset</button></div>
+            </div>
+          </div>
+          <div class="section-title-row"><div><h2>Ringkasan Harian</h2><span class="section-hint">Transaksi pada tanggal yang dipilih</span></div></div>
+          <div class="stats-grid stats-grid-four">
+            <div class="stat-card stat-blue"><div class="stat-card-top"><span>Transfer Hari Ini</span><span class="stat-icon">↗</span></div><div class="stat-value" id="statTransfer">Rp 0</div><div class="stat-foot">Pemasukan melalui transfer</div></div>
+            <div class="stat-card stat-green"><div class="stat-card-top"><span>Tunai Hari Ini</span><span class="stat-icon">▤</span></div><div class="stat-value" id="statCash">Rp 0</div><div class="stat-foot">Pemasukan dalam bentuk tunai</div></div>
+            <div class="stat-card stat-cyan"><div class="stat-card-top"><span>Total Pemasukan</span><span class="stat-icon">↗</span></div><div class="stat-value" id="statIncome">Rp 0</div><div class="stat-foot">Seluruh uang masuk</div></div>
+            <div class="stat-card stat-red"><div class="stat-card-top"><span>Total Pengeluaran</span><span class="stat-icon">↘</span></div><div class="stat-value" id="statExpense">Rp 0</div><div class="stat-foot">Seluruh uang keluar</div></div>
+          </div>
+          <div class="section-title-row cumulative-title"><div><h2>Ringkasan Kumulatif</h2><span class="section-hint">Performa bulan dan tahun terpilih</span></div></div>
+          <div class="stats-grid stats-grid-three">
+            <div class="stat-card stat-purple"><div class="stat-card-top"><span>Pemasukan Bulan Berjalan</span><span class="stat-icon">▥</span></div><div class="stat-value" id="statIncomeMtd">Rp 0</div><div class="stat-foot">Tanggal 1 hingga tanggal aktif</div></div>
+            <div class="stat-card stat-navy"><div class="stat-card-top"><span>Pemasukan Tahun Berjalan</span><span class="stat-icon">▦</span></div><div class="stat-value" id="statIncomeYtd">Rp 0</div><div class="stat-foot">Januari hingga bulan terpilih</div></div>
+            <div class="stat-card stat-orange"><div class="stat-card-top"><span>Pengeluaran Bulan Berjalan</span><span class="stat-icon">↘</span></div><div class="stat-value" id="statExpenseMtd">Rp 0</div><div class="stat-foot">Pengeluaran bulan terpilih</div></div>
+          </div>
+          <div class="content-card table-card">
+            <div class="card-heading"><div><h2>Transaksi Hari Ini</h2><p id="dashboardTableSubtitle">Rincian transaksi untuk tanggal yang dipilih.</p></div><button class="btn btn-outline btn-sm" data-go="transaksi">+ Catat transaksi</button></div>
+            <div id="dashboardTransactions" class="table-wrap"></div>
+          </div>
+          <div class="content-card table-card dashboard-stock-card">
+            <div class="card-heading"><div><h2>Perhatian Stok</h2><p>Barang yang perlu diperiksa atau di-restock.</p></div><button class="btn btn-outline btn-sm" data-go="barang">Lihat barang →</button></div>
+            <div id="dashboardStockAlerts" class="table-wrap"></div>
+          </div>
+        </section>
+
+        <!-- ADMIN TRANSACTION ENTRY -->
+        <section id="page-transaksi" class="page hidden">
+          <div class="page-heading-row"><div><div class="eyebrow">PENCATATAN KEUANGAN</div><h1>Transaksi</h1><p class="page-subtitle">Catat pemasukan dan pengeluaran toko secara teratur.</p></div></div>
+          <div class="content-card form-card">
+            <div class="card-heading"><div><h2>Input Transaksi</h2><p>Lengkapi detail transaksi lalu simpan ke database.</p></div><span class="mini-tag">FORM INPUT</span></div>
+            <form id="transactionForm">
+              <div class="form-grid form-grid-three">
+                <div class="field"><label for="txnDate">Tanggal <span class="required">*</span></label><input id="txnDate" type="date" required></div>
+                <div class="field"><label for="txnType">Tipe Transaksi <span class="required">*</span></label><select id="txnType" required><option value="Pemasukan">Pemasukan</option><option value="Pengeluaran">Pengeluaran</option></select></div>
+                <div class="field"><label>Metode Pembayaran <span class="required">*</span></label><div class="radio-row"><label class="radio-option"><input type="radio" name="txnMethod" value="Transfer" checked><span>Transfer (TF)</span></label><label class="radio-option"><input type="radio" name="txnMethod" value="Tunai"><span>Tunai</span></label></div></div>
+              </div>
+              <div class="form-grid form-grid-three transaction-second-row">
+                <div class="field"><label for="txnAmount">Nominal (Rp) <span class="required">*</span></label><div class="currency-input"><span>Rp</span><input id="txnAmount" type="number" min="1" step="1" inputmode="numeric" placeholder="0" required></div></div>
+                <div class="field"><label for="txnCategory">Kategori <span class="required">*</span></label><select id="txnCategory" required></select></div>
+                <div class="field"><label for="txnNote">Keterangan</label><textarea id="txnNote" rows="2" maxlength="500" placeholder="Contoh: pembayaran pesanan pelanggan..."></textarea></div>
+              </div>
+              <div class="form-footer"><span class="form-note">Transaksi tersimpan dengan nama akun yang sedang digunakan.</span><button id="saveTransactionBtn" class="btn btn-primary btn-save" type="submit">✓ &nbsp; SIMPAN TRANSAKSI</button></div>
+            </form>
+          </div>
+          <div class="content-card table-card">
+            <div class="card-heading"><div><h2>Riwayat Transaksi Terbaru</h2><p>Transaksi paling baru yang tercatat dalam sistem.</p></div><button id="refreshTransactions" class="btn btn-light btn-sm">↻ Segarkan</button></div>
+            <div id="recentTransactionsTable" class="table-wrap"></div>
+          </div>
+        </section>
+
+        <!-- ADMIN INVENTORY -->
+        <section id="page-barang" class="page hidden">
+          <div class="page-heading-row"><div><div class="eyebrow">MANAJEMEN INVENTARIS</div><h1>Daftar Barang</h1><p class="page-subtitle">Cari barang, periksa harga, dan perbarui stok secara manual.</p></div><button id="addItemBtn" class="btn btn-primary">＋ Tambah Barang</button></div>
+          <div class="inventory-summary-row"><div class="inventory-mini-card"><span class="inventory-mini-icon blue">▦</span><div><small>Total barang aktif</small><strong id="itemsTotalCount">0</strong></div></div><div class="inventory-mini-card"><span class="inventory-mini-icon orange">!</span><div><small>Stok menipis</small><strong id="itemsLowCount">0</strong></div></div><div class="inventory-mini-card"><span class="inventory-mini-icon red">↓</span><div><small>Stok kritis</small><strong id="itemsCriticalCount">0</strong></div></div></div>
+          <div class="content-card table-card">
+            <div class="inventory-toolbar"><div class="search-box"><span>⌕</span><input id="itemSearch" type="search" placeholder="Cari nama barang, ID, atau kategori..."><button id="itemSearchBtn" class="btn btn-primary btn-sm">Cari</button></div><div class="inventory-filters"><div class="field compact-field"><label for="itemCategoryFilter">Kategori</label><select id="itemCategoryFilter"><option value="Semua">Semua kategori</option></select></div><div class="field compact-field"><label for="itemSort">Urutkan</label><select id="itemSort"><option value="name">Nama (A–Z)</option><option value="stock">Stok sedikit</option><option value="priceAsc">Harga terendah</option><option value="priceDesc">Harga tertinggi</option></select></div></div></div>
+            <div id="itemsTable" class="table-wrap"></div>
+          </div>
+        </section>
+
+        <!-- OWNER DASHBOARD -->
+        <section id="page-owner-dashboard" class="page hidden">
+          <div class="page-heading-row"><div><div class="eyebrow">OWNER CONTROL CENTER</div><h1>Dashboard Owner</h1><p class="page-subtitle">Pantau arus kas, status transaksi, dan kondisi inventaris toko.</p></div><span class="read-only-pill"><span>◉</span> Monitoring</span></div>
+          <div class="filter-panel owner-filter-panel"><div class="filter-panel-title"><span class="filter-glyph">☷</span><div><strong>Periode Laporan</strong><small>Ringkasan berdasarkan tanggal dan bulan pilihan.</small></div></div><div class="filter-controls"><div class="field"><label for="ownerDashDate">Tanggal Acuan</label><input id="ownerDashDate" type="date"></div><div class="field"><label for="ownerDashMonth">Bulan</label><select id="ownerDashMonth"></select></div><div class="field"><label for="ownerDashYear">Tahun</label><select id="ownerDashYear"></select></div><div class="filter-actions"><button id="applyOwnerFilter" class="btn btn-primary">Terapkan</button><button id="resetOwnerFilter" class="btn btn-light">Reset</button></div></div></div>
+          <div class="stats-grid stats-grid-four owner-stats-grid">
+            <div class="stat-card stat-blue"><div class="stat-card-top"><span>Total Pemasukan</span><span class="stat-icon">↗</span></div><div class="stat-value" id="ownerIncome">Rp 0</div><div class="stat-foot">Bulan terpilih</div></div>
+            <div class="stat-card stat-red"><div class="stat-card-top"><span>Total Pengeluaran</span><span class="stat-icon">↘</span></div><div class="stat-value" id="ownerExpense">Rp 0</div><div class="stat-foot">Bulan terpilih</div></div>
+            <div class="stat-card stat-green"><div class="stat-card-top"><span>Selisih Arus Kas</span><span class="stat-icon">＝</span></div><div class="stat-value" id="ownerNet">Rp 0</div><div class="stat-foot">Pemasukan dikurangi pengeluaran</div></div>
+            <div class="stat-card stat-orange"><div class="stat-card-top"><span>Stok Perlu Perhatian</span><span class="stat-icon">!</span></div><div class="stat-value" id="ownerStockAlertCount">0 barang</div><div class="stat-foot" id="ownerStockAlertSub">Menipis atau kritis</div></div>
+          </div>
+          <div class="owner-dashboard-grid">
+            <div class="content-card table-card"><div class="card-heading"><div><h2>Aktivitas Transaksi Terbaru</h2><p>Gunakan verifikasi jika transaksi sudah diperiksa.</p></div><button class="btn btn-outline btn-sm" data-go="owner-transaksi">Lihat semua →</button></div><div id="ownerRecentTransactions" class="table-wrap"></div></div>
+            <div class="content-card table-card"><div class="card-heading"><div><h2>Perhatian Inventaris</h2><p>Stok rendah yang perlu ditindaklanjuti Admin.</p></div><button class="btn btn-outline btn-sm" data-go="owner-stok">Detail →</button></div><div id="ownerDashboardStock" class="table-wrap"></div></div>
+          </div>
+          <div class="owner-note"><span>i</span><div><strong>Mode Owner</strong><p>Anda dapat memantau dan menandai status verifikasi transaksi. Input transaksi dan perubahan stok tetap dilakukan melalui akun Admin.</p></div></div>
+        </section>
+
+        <!-- OWNER TRANSACTION MONITOR -->
+        <section id="page-owner-transaksi" class="page hidden">
+          <div class="page-heading-row"><div><div class="eyebrow">AUDIT TRANSAKSI</div><h1>Monitoring Transaksi</h1><p class="page-subtitle">Periksa transaksi dan perbarui status verifikasinya.</p></div><span class="read-only-pill">Akses Owner</span></div>
+          <div class="content-card table-card"><div class="table-toolbar filter-inline"><div class="field"><label for="ownerTxnFrom">Dari tanggal</label><input id="ownerTxnFrom" type="date"></div><div class="field"><label for="ownerTxnTo">Sampai tanggal</label><input id="ownerTxnTo" type="date"></div><div class="field search-field"><label for="ownerTxnSearch">Pencarian</label><input id="ownerTxnSearch" type="search" placeholder="Kategori, keterangan, ID..."></div><button id="applyOwnerTxnFilter" class="btn btn-primary">Terapkan</button></div><div id="ownerTransactionsTable" class="table-wrap"></div></div>
+        </section>
+
+        <!-- OWNER STOCK MONITOR -->
+        <section id="page-owner-stok" class="page hidden">
+          <div class="page-heading-row"><div><div class="eyebrow">MONITORING INVENTARIS</div><h1>Monitoring Stok</h1><p class="page-subtitle">Lihat stok saat ini dan jejak penyesuaian yang dilakukan Admin.</p></div><span class="read-only-pill">Read-only</span></div>
+          <div class="content-card table-card"><div class="card-heading"><div><h2>Daftar Barang</h2><p>Status stok dihitung dari stok saat ini dan batas minimum.</p></div><div class="search-box small-search"><span>⌕</span><input id="ownerItemSearch" type="search" placeholder="Cari barang..."></div></div><div id="ownerItemsTable" class="table-wrap"></div></div>
+          <div class="content-card table-card"><div class="card-heading"><div><h2>Riwayat Mutasi Stok</h2><p>Log perubahan stok manual untuk kebutuhan audit.</p></div></div><div id="ownerStockMovements" class="table-wrap"></div></div>
+        </section>
+
+        <!-- OWNER REPORTS -->
+        <section id="page-laporan" class="page hidden">
+          <div class="page-heading-row"><div><div class="eyebrow">LAPORAN & EKSPOR</div><h1>Laporan</h1><p class="page-subtitle">Unduh data untuk analisis, arsip, atau rekonsiliasi.</p></div></div>
+          <div class="report-info-banner"><div class="report-info-icon">⇩</div><div><strong>Ekspor data Veeva Apps</strong><p>File CSV dapat dibuka menggunakan Google Sheets atau aplikasi spreadsheet lain. Laporan transaksi dan mutasi bisa difilter berdasarkan tanggal.</p></div></div>
+          <div class="content-card report-card"><div class="card-heading"><div><h2>Unduh Laporan</h2><p>Pilih jenis data dan rentang tanggal yang diperlukan.</p></div></div><div class="report-form-grid"><div class="field"><label for="reportType">Jenis laporan</label><select id="reportType"><option value="transaksi">Riwayat transaksi</option><option value="barang">Daftar barang & stok</option><option value="mutasi">Riwayat mutasi stok</option></select></div><div class="field"><label for="reportFrom">Dari tanggal (opsional)</label><input id="reportFrom" type="date"></div><div class="field"><label for="reportTo">Sampai tanggal (opsional)</label><input id="reportTo" type="date"></div><div class="field report-action-field"><label>&nbsp;</label><button id="downloadReportBtn" class="btn btn-primary btn-full">⇩ &nbsp; Unduh CSV</button></div></div></div>
+          <div class="report-security-note"><span>✓</span> Ekspor hanya tersedia untuk Owner. Data kata sandi dan hash autentikasi tidak pernah disertakan dalam laporan.</div>
+        </section>
+
+        <!-- OWNER USER MANAGEMENT -->
+        <section id="page-pengguna" class="page hidden">
+          <div class="page-heading-row"><div><div class="eyebrow">AKSES & PENGGUNA</div><h1>Pengguna</h1><p class="page-subtitle">Buat akun Admin dan kendalikan status akses aplikasi.</p></div><button id="addAdminBtn" class="btn btn-primary">＋ Tambah Admin</button></div>
+          <div class="report-info-banner"><div class="report-info-icon">♙</div><div><strong>Kontrol akses Owner</strong><p>Role Owner dibuat saat setup awal. Dari halaman ini Owner dapat membuat, menonaktifkan, mengaktifkan kembali, atau mereset kata sandi akun Admin.</p></div></div>
+          <div class="content-card table-card"><div class="card-heading"><div><h2>Daftar Pengguna</h2><p>Informasi autentikasi sensitif tidak ditampilkan.</p></div><button id="refreshUsersBtn" class="btn btn-light btn-sm">↻ Segarkan</button></div><div id="usersTable" class="table-wrap"></div></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- ITEM MODAL -->
+  <div id="itemModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="itemModalTitle">
+    <div class="modal-card modal-wide"><div class="modal-header"><div><div class="eyebrow">DATA INVENTARIS</div><h2 id="itemModalTitle">Tambah Barang</h2><p>Masukkan detail barang dan stok terkini.</p></div><button class="modal-close" type="button" data-close-modal="itemModal">×</button></div>
+      <form id="itemForm"><input id="itemId" type="hidden"><div class="form-grid form-grid-two"><div class="field"><label for="itemName">Nama Barang <span class="required">*</span></label><input id="itemName" type="text" maxlength="140" placeholder="Nama dan spesifikasi barang" required></div><div class="field"><label for="itemCategory">Kategori <span class="required">*</span></label><select id="itemCategory" required></select></div><div class="field"><label for="itemUnit">Satuan <span class="required">*</span></label><select id="itemUnit" required><option value="pcs">pcs</option><option value="rim">rim</option><option value="box">box</option><option value="pack">pack</option><option value="lusin">lusin</option><option value="meter">meter</option><option value="set">set</option><option value="unit">unit</option></select></div><div class="field"><label for="itemPrice">Harga Jual (Rp) <span class="required">*</span></label><input id="itemPrice" type="number" min="0" step="1" placeholder="0" required></div><div class="field"><label for="itemStock">Stok Saat Ini <span class="required">*</span></label><input id="itemStock" type="number" min="0" step="1" placeholder="0" required><small class="field-hint">Perubahan stok otomatis masuk ke riwayat mutasi.</small></div><div class="field"><label for="itemMinStock">Batas Minimum Stok <span class="required">*</span></label><input id="itemMinStock" type="number" min="0" step="1" value="5" required><small class="field-hint">Dipakai untuk status menipis/kritis.</small></div><div class="field full-span"><label for="itemStockNote">Catatan perubahan stok</label><input id="itemStockNote" type="text" maxlength="250" placeholder="Contoh: stok fisik hasil pengecekan hari ini"></div></div><div id="itemFormError" class="form-error hidden"></div><div class="modal-footer"><button class="btn btn-light" type="button" data-close-modal="itemModal">Batal</button><button id="saveItemBtn" class="btn btn-primary" type="submit">Simpan Barang</button></div></form>
+    </div>
+  </div>
+
+  <!-- CREATE ADMIN MODAL -->
+  <div id="adminModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="adminModalTitle"><div class="modal-card"><div class="modal-header"><div><div class="eyebrow">MANAJEMEN AKUN</div><h2 id="adminModalTitle">Tambah Admin</h2><p>Akun akan memiliki izin untuk mencatat transaksi dan mengelola barang.</p></div><button class="modal-close" type="button" data-close-modal="adminModal">×</button></div><form id="adminForm"><div class="field"><label for="adminName">Nama Admin</label><input id="adminName" type="text" maxlength="100" required placeholder="Nama lengkap"></div><div class="field"><label for="adminEmail">Email login</label><input id="adminEmail" type="email" maxlength="254" required placeholder="admin@email.com"></div><div class="field"><label for="adminPassword">Kata sandi awal</label><input id="adminPassword" type="password" minlength="12" maxlength="128" required placeholder="Minimal 12 karakter"><small class="field-hint">Gunakan kata sandi unik dan kirimkan secara pribadi.</small></div><div id="adminFormError" class="form-error hidden"></div><div class="modal-footer"><button type="button" class="btn btn-light" data-close-modal="adminModal">Batal</button><button id="saveAdminBtn" type="submit" class="btn btn-primary">Buat Akun</button></div></form></div></div>
+
+  <!-- RESET PASSWORD MODAL -->
+  <div id="resetPasswordModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="resetPasswordTitle"><div class="modal-card"><div class="modal-header"><div><div class="eyebrow">BANTUAN AKUN</div><h2 id="resetPasswordTitle">Reset Kata Sandi Admin</h2><p>Kata sandi baru akan menggantikan kata sandi sebelumnya.</p></div><button class="modal-close" type="button" data-close-modal="resetPasswordModal">×</button></div><form id="resetPasswordForm"><input id="resetPasswordUserId" type="hidden"><div class="field"><label for="resetPasswordValue">Kata sandi baru</label><input id="resetPasswordValue" type="password" minlength="12" maxlength="128" required placeholder="Minimal 12 karakter"></div><div class="form-error hidden" id="resetPasswordError"></div><div class="modal-footer"><button type="button" class="btn btn-light" data-close-modal="resetPasswordModal">Batal</button><button type="submit" class="btn btn-primary">Reset Kata Sandi</button></div></form></div></div>
+
+  <!-- CHANGE PASSWORD MODAL -->
+  <div id="changePasswordModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="changePasswordTitle"><div class="modal-card"><div class="modal-header"><div><div class="eyebrow">KEAMANAN AKUN</div><h2 id="changePasswordTitle">Ganti Kata Sandi</h2><p>Gunakan frasa sandi unik dengan minimal 12 karakter.</p></div><button class="modal-close" type="button" data-close-modal="changePasswordModal">×</button></div><form id="changePasswordForm"><div class="field"><label for="currentPassword">Kata sandi saat ini</label><input id="currentPassword" type="password" required autocomplete="current-password"></div><div class="field"><label for="newPassword">Kata sandi baru</label><input id="newPassword" type="password" required minlength="12" maxlength="128" autocomplete="new-password"></div><div class="field"><label for="confirmPassword">Ulangi kata sandi baru</label><input id="confirmPassword" type="password" required minlength="12" maxlength="128" autocomplete="new-password"></div><div id="changePasswordError" class="form-error hidden"></div><div class="modal-footer"><button type="button" class="btn btn-light" data-close-modal="changePasswordModal">Batal</button><button type="submit" class="btn btn-primary">Simpan Kata Sandi</button></div></form></div></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
