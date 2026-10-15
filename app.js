@@ -2,7 +2,7 @@
   'use strict';
 
   // ⚠️ GANTI DENGAN URL DEPLOYMENT WEB APP GOOGLE APPS SCRIPT ANDA
-  const API_URL = "https://script.google.com/macros/s/AKfycbyQqh3hg7zH8JAXrdwpKHy49JHxoOKjgPoXov4kswZhp0ThWmm-YPAbCC3INV1j_Q70/exec";
+  const API_URL = "https://script.google.com/macros/s/AKfycbxV46C5DigZURUgwniLq66JmUI9wjUILNQKgii6psmnKNzNs-TdsDx83U5t6BsmS_KL/exec";
 
   const SESSION_KEY = 'veevaAppsSession';
   const MONTHS = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
